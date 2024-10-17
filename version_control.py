@@ -1,1 +1,1 @@
-TYPE = 'git'
+TYPE = 'svn'
