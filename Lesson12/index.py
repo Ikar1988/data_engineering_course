@@ -1,34 +1,33 @@
-import requests
-import xml.etree.ElementTree as ET
-import pandas as pd
+from downloader.downloader import Currency, Weather
+
+
+weather_list = []
+weather = Weather()
+for city in weather.get_data_from_yaml('cities.yaml'):
+    weather_list.append(weather.get_weather(city))
+
+weather.save_to_csv('weather.csv', weather_list)
+
 
 courses = []
+currency = Currency()
 
-for day in range(1,31):
+currency_names = currency.get_data_from_yaml('currencies.yaml')
 
-    if day < 10:
-        day_of_november = f'0{str(day)}/11/2023'
-        date = f'0{str(day)}.11.2023'
-    else:
-        day_of_november = f'{str(day)}/11/2023'
-        date = f'{str(day)}.11.2023'
+for day in range(1, 2):
+    for currency_name in currency_names:
 
-    url = f'http://www.cbr.ru/scripts/XML_daily.asp?date_req={day_of_november}'
+        if day < 10:
+            day_of_november = f'0{str(day)}/11/2023'
+            date = f'0{str(day)}.11.2023'
+        else:
+            day_of_november = f'{str(day)}/11/2023'
+            date = f'{str(day)}.11.2023'
 
-    response = requests.get(url)
+        cur = currency.get_currency(day_of_november, currency_name=currency_name)
+        if cur:
+            courses.append(cur)
 
-    if response.status_code == 200:
-        root_node = ET.fromstring(response.text)
-        for tag in root_node.findall('Valute'):
 
-            currency = tag.find('CharCode').text
-            if currency == 'USD':
-                value = tag.find('Value').text
-                courses.append({'date': date, 'currency': currency, 'value': value})
-                print(f'{date}: OK')
+currency.save_to_csv('courses.csv', courses)
 
-    else:
-        print('error')
-
-pd = pd.DataFrame(courses)
-pd.to_csv('courses.csv')
