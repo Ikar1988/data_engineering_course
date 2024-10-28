@@ -1,0 +1,6 @@
+2024-10-29 01:46:11,699 ERROR expected '<document start>', but found '<block sequence start>'
+  in "./config/cities.yaml", line 2, column 1
+2024-10-29 01:46:18,298 ERROR expected '<document start>', but found '<block sequence start>'
+  in "./config/cities.yaml", line 2, column 1
+2024-10-29 01:51:52,433 ERROR expected '<document start>', but found '<block sequence start>'
+  in "./config/cities.yaml", line 2, column 1. Τΰιλ: ./config/cities.yaml
